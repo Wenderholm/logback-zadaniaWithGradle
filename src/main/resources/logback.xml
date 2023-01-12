@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+<!--    plik do logowania najnowszych logów-->
+    <property name="HOME_LOG_ROLLING" value="${user.dir}/my-logs/newest.log"/>
+<!--    logowanie do konsoli -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+<!--        scheamt do logowania w konsoli-->
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+<!--    logowanie do pliku-->
+    <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${HOME_LOG_ROLLING}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+<!--       plik do logowania rolowanych logów  %d- data, %i - liczba porzadkowa na podstawie tego co jest w %d   -->
+            <fileNamePattern>my-logs/archived/rolled.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+<!--            wielkosc plikow-->
+            <maxFileSize>20MB</maxFileSize>
+<!--            maksymalny rozmiar wszystkich plikow-->
+            <totalSizeCap>10GB</totalSizeCap>
+<!--            czas przetrzymywania 50 dni     -->
+            <maxHistory>50</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="pl.zajavka" level="info" additivity="false">
+        <appender-ref ref="FILE-ROLLING"/>
+    </logger>
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
+
